@@ -95,4 +95,79 @@ Polynome suppTete(Polynome p, Monome m){
 Polynome appartientMonome(Polynome p, Monome m){
     while(degMon(val)<degMon(monCourant(p)) && !estVidePoly(p)){
       p=p->suivant;
+    }
+    if (!estVidePoly(p)){
+      if (coefMon(m)==coefMon(monCourant(p))){
+        return p;
+      }
+      else return NULL;
+    }
+    else return NULL;
+}
+
+Polynome suppMonPoly(Polynome p, Monome m){
+  Polynome c=p;
+  if(estVidePoly(p)){
+    return p;
+  }
+  else {
+    while (degMon(m)<degMon(monCourant(p->suivant)) && (!estVidePoly(p->suivant))){
+      p=p->suivant;
+    }
+    if (estVidePoly(p->suivant)){
+      return c;
+    }
+    else{
+      if (degMon(m)==degMon(monCourant(p->suivant))){
+        if (coefMon(m)==coefMon(monCourant(p->suivant))){
+
+        }
+      }
+    }
+  }
+}
+
+Polynome delPoly (Polynome p){
+  Polynome tmp;
+  while (!estVidePoly(p)){
+    tmp=p;
+    p=p->suivant;
+    free(tmp);
+  }
+  return NULL;
+}
+
+float maxCoef(Polynome p){
+  float max= -1000;
+  while(!estVidePoly(p)){
+    if (max<coefMon(p->m)){
+      max=p->m.coef;
+    }
+    p=p->suivant;
+  }
+  return max;
+}
+
+float sommeCoef (Polynome p){
+  float sum=0;
+  while(!estVidePoly(p)){
+    sum+=coefMon(p->m)
+    p=p->suivant;
+  }
+  return sum;
+}
+
+float derivPoly(Polynome p){
+  Polynome deriv=creerPolynome();
+  if (p->m.degre == 0){
+    p=p->suivant;
+  }
+  //car la dérivée d'une constante est nulle
+  while(!estVidePoly(p)){
+    Monome d;
+    m.coef=p->m.coef*p->m.degre;
+    d.degre=p->m.degre-1;
+    deriv=inserMonPoly(deriv,p);
+  }
+  return deriv;
 }
