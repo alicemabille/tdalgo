@@ -31,16 +31,16 @@ int teteFile(File p){
   return p->m;
 }
 
-File inserQueue(p){
-  if (estVideFile(*p)){ //équivalent de InserTete() mais on n'a pas de fonction InserTete() ici car c'est une file
+File inserQueue(File p, int m){
+  if (estVideFile(p)){ //équivalent de InserTete() mais on n'a pas de fonction InserTete() ici car c'est une file
     File tmp=creerFile();
-    tmp=(File*)malloc(sizeof(struct toto)); //on rajoute un élément donc on malloc
+    tmp=(File)malloc(sizeof(struct toto)); //on rajoute un élément donc on malloc
     tmp->m=m;
     tmp->suivant=p;
     return tmp;
   }
   else{
-    inserQueue((*p)->suivant, m);
+    inserQueue((p)->suivant, m);
   }
 }
 
@@ -55,7 +55,7 @@ int sommeFile(File p){
   int sum=0;
   while(!estVideFile(p)){
     sum+=teteFile(p);
-    suppTete(p);
+    p = suppTete(p);
   }
   return sum;
 }
