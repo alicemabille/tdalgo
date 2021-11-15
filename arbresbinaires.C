@@ -101,11 +101,10 @@ void parcoursBizarre(Arbre a){
 }
 
 int tailleArbre(Arbre a){
-  int taille=0;
-  if (!estVideArbre(a)){
-    taille++;
-    taille += tailleArbre(a->fils_gauche);
-    taille += tailleArbre(a->fils_droit);
+  if (estVideArbre(a)){
+    return 0;
   }
-  return taille;
+  else{
+    return taille + tailleArbre(a->fils_gauche) + tailleArbre(a->fils_droit);
+  }
 }
