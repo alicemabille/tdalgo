@@ -32,7 +32,7 @@ int teteFile(File p){
 }
 
 File inserQueue(p){
-  if (estVideFile(*p)){
+  if (estVideFile(*p)){ //équivalent de InserTete() mais on n'a pas de fonction InserTete() ici car c'est une file
     File tmp=creerFile();
     tmp=(File*)malloc(sizeof(struct toto)); //on rajoute un élément donc on malloc
     tmp->m=m;
