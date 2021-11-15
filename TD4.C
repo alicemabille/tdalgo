@@ -42,21 +42,12 @@ int longListe(Liste l){
   return i;
 }
 
-void procedureLongListe(Liste l){
-  int i=0;
-  while(!estVideL(l)){
-    i++;
-    l=l->suivant;
-  }
-  int *a=i;
-}
-
 TElement donneeMax(Liste l){
   if (estVideL(l)){
     printf("La liste est vide.");
     return 0;
+  }
   else{
-    }
     TElement max=getDonnee(l);
     while(!estVideL(l)){
       if (max<getDonnee(l)){
@@ -70,7 +61,7 @@ TElement donneeMax(Liste l){
 
 Liste adresseDonneeMax(Liste l){
   TElement max=l->donnee;
-  Liste adMax=&l;
+  Liste adMax=l;
   while(!estVideL(l)){
     if (max < l->donnee){
       max=l->donnee;
@@ -84,7 +75,7 @@ Liste adresseDonneeMax(Liste l){
 }
 
 void inserTete(Liste *l, TElement donnee){
-    Liste tmp=initListe();
+    Liste tmp=initL();
     tmp=(Liste)malloc(sizeof(struct cellule));
     tmp->donnee=donnee;
     tmp->suivant=*l;
