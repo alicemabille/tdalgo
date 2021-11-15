@@ -159,17 +159,47 @@ float sommeCoef (Polynome p){
   return sum;
 }
 
-Polynome derivPoly(Polynome p){
-  Polynome deriv=creerPolynome();
-  if (p->m.degre == 0){
-    p=p->suivant;
-  }
-  //car la dérivée d'une constante est nulle
-  while(!estVidePoly(p)){
-    Monome d;
-    p->m.coef=p->m.coef*p->m.degre;
-    d.degre=p->m.degre-1;
-    deriv=inserMonPoly(deriv,p);
-  }
-  return deriv;
+Polynome deriv_poly(Polynome polynome) {
+    Polynome derive = polynome;
+    while (!est_vide_polynome(polynome)) {
+        polynome->monome.coef += polynome->monome.degre;
+        polynome->monome.degre--;
+        if (polynome->monome.degre < 0) {
+            derive = polynome->suivant;
+        }
+        polynome = polynome->suivant;
+    }
+    return derive;
+}
+
+int max_degre(Polynome polynome) {
+    int max = polynome->monome.degre;
+    while (!est_vide_polynome(polynome)) {
+        if (polynome->monome.degre > max) {
+            max = polynome->monome.degre;
+        }
+        polynome = polynome->suivant;
+    }
+    return max;
+}
+
+Polynome somme_poly(Polynome polynome1, Polynome polynome2) {
+    Polynome grand_poly, petit_poly, temp_poly;
+    if (max_degre(polynome1) > max_degre(polynome2)) {
+        grand_poly = polynome1;
+        petit_poly = polynome2;
+    }
+    else {
+        grand_poly = polynome2;
+        petit_poly = polynome1;
+    }
+    temp_poly = grand_poly;
+    while (!est_vide_polynome(petit_poly)) {
+        if (grand_poly->monome.degre == petit_poly->monome.degre) {
+            grand_poly->monome.coef += petit_poly->monome.coef; 
+        }
+        petit_poly = petit_poly->suivant;
+        grand_poly = grand_poly->suivant;
+    }
+    return temp_poly;
 }
