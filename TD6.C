@@ -93,7 +93,7 @@ Polynome suppTete(Polynome p, Monome m){
 }
 
 Polynome appartientMonome(Polynome p, Monome m){
-    while(degMon(val)<degMon(monCourant(p)) && !estVidePoly(p)){
+    while(degMon(m)<degMon(monCourant(p)) && !estVidePoly(p)){
       p=p->suivant;
     }
     if (!estVidePoly(p)){
@@ -151,13 +151,13 @@ float maxCoef(Polynome p){
 float sommeCoef (Polynome p){
   float sum=0;
   while(!estVidePoly(p)){
-    sum+=coefMon(p->m)
+    sum+=coefMon(p->m);
     p=p->suivant;
   }
   return sum;
 }
 
-float derivPoly(Polynome p){
+Polynome derivPoly(Polynome p){
   Polynome deriv=creerPolynome();
   if (p->m.degre == 0){
     p=p->suivant;
@@ -165,7 +165,7 @@ float derivPoly(Polynome p){
   //car la dérivée d'une constante est nulle
   while(!estVidePoly(p)){
     Monome d;
-    m.coef=p->m.coef*p->m.degre;
+    p->m.coef=p->m.coef*p->m.degre;
     d.degre=p->m.degre-1;
     deriv=inserMonPoly(deriv,p);
   }
