@@ -105,6 +105,25 @@ int tailleArbre(Arbre a){
     return 0;
   }
   else{
-    return taille + tailleArbre(a->fils_gauche) + tailleArbre(a->fils_droit);
+    return 1 + tailleArbre(a->fils_gauche) + tailleArbre(a->fils_droit);
   }
+}
+
+int nbFeuilles(Arbre a){
+  if (estVideArbre(a)){
+    return 0;
+  }
+  else{
+    if(estFeuille(a)){
+      return 1;
+    }
+    return nbFeuilles(a->fils_gauche) + nbFeuilles(a->fils_droit);
+  }
+}
+
+int contientEltArbre(Arbre a, Telement elt){
+  if(!estVideArbre(a)){
+    return (a->valeur==elt) || contientEltArbre(Arbre a->fils_gauche(a)) || contientEltArbre(Arbre a->fils_droit(a));
+  }
+  else return 0;
 }
