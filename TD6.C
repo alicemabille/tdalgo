@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 typedef struct {
   float coef;
   int degre;
@@ -37,7 +39,7 @@ int estVidePoly(Polynome p){
 
 Polynome inserTete(Polynome p, Monome m){
   Polynome tmp=creerPolynome();
-  tmp=(Polynome*)malloc(sizeof(struct toto));
+  tmp=(Polynome)malloc(sizeof(struct toto));
   tmp->m=m;
   tmp->suivant=p;
   return tmp;
@@ -49,21 +51,21 @@ Polynome inserQueue(Polynome p, Monome m){
     p=p->suivant;
   }
   Polynome tmp =creerPolynome();
-  tmp=(Polynome*)malloc(sizeof(struct toto));
+  tmp=(Polynome)malloc(sizeof(struct toto));
   tmp->m=m;
   tmp->suivant=NULL;
   p->suivant=tmp;
   return c;
 }
 
-void inserQueueRec(Polynome *p, Monome m){
+/*void inserQueueRec(Polynome *p, Monome m){
   if (estVidePoly(*p)){
     p=inserTete(*p,m);
   }
   else{
     inserQueueRec((*p)->suivant, m);
   }
-}
+}*/
 
 Polynome inserMonPoly(Polynome p, Monome val){
   Polynome c=p;
@@ -76,7 +78,7 @@ Polynome inserMonPoly(Polynome p, Monome val){
     }
   }
   if(!estVidePoly(p->suivant)){
-    Polynome tmp=(Polynome*)malloc(sizeof(struct toto));
+    Polynome tmp=(Polynome)malloc(sizeof(struct toto));
     tmp->m=val;
     tmp->suivant=p->suivant;
     p->suivant=tmp;
