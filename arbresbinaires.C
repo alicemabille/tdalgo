@@ -127,3 +127,37 @@ int contientEltArbre(Arbre a, Telement elt){
   }
   else return 0;
 }
+
+int hauteurArbre(Arbre a){
+  if (estVide(a)){
+    return 0;
+  }
+  int hg = hauteurArbre(fils_gauche(a));
+  int hd = hauteurArbre(fils_droit(a));
+  return max(hg,hd)+1;
+}
+
+Arbre LibMem(Arbe a){
+  free(a);
+  a=NULL;
+}
+
+Arbre suppArbre(Arbre a){
+  if(!estVide(a)){
+    suppArbre(fils_gauche(a));
+    suppArbre(fils_droit(a));
+    a=LibMem(a);
+  }
+  return a;
+}
+
+int RechercheMinArbre(Arbre a, int min){
+  if (estVide(a)){
+    return 0;
+  }
+  int g = RechercheMinArbre(fils_gauche(a,min));
+  int d = RechercheMinArbre(fils_droit(a,min));
+  if (a->valeur<min){
+    min=a->valeur;
+  }
+}
