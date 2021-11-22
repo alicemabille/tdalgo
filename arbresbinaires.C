@@ -1,7 +1,9 @@
-typedef int Telement;
+#include "TDfiles/file.h"
+#include "TDpiles/DPile.h"
+#include <math.h>
 
 typedef struct arbre{
-  Telement valeur;
+  int valeur;
   struct arbre* fils_gauche;
   struct arbre* fils_droit;
 }*Arbre;
@@ -11,13 +13,13 @@ Arbre initArbre(){
 }
 
 int estVideArbre(Arbre a){
-  if (ab==NULL){
+  if (a==NULL){
     return 1;
   }
   return 0;
 }
 
-Arbre creatFeuille(Telement elt){
+Arbre creatFeuille(int elt){
   Arbre f = initArbre();
   f=(Arbre)malloc(sizeof(struct arbre));
   f->valeur=elt;
@@ -26,7 +28,7 @@ Arbre creatFeuille(Telement elt){
   return f;
 }
 
-Arbre creatNoeud(Arbre fg, Arbre fd, Telement alt){
+Arbre creatNoeud(Arbre fg, Arbre fd, int elt){
   Arbre fe=creatFeuille(elt);
   fe->fils_gauche=fg;
   fe->fils_droit=fd;
@@ -57,45 +59,45 @@ int estFeuille(Arbre a){
 void parcoursPrefixe(Arbre a){
   //Préfixe : racine, gauche, droite
   if(!estVideArbre(a)){
-    traiter(a->valeur);
-    parcoursPrefixe(Arbre a->fils_gauche(a));
-    parcoursPrefixe(Arbre a->fils_droit(a));
+    //traiter(a->valeur);
+    parcoursPrefixe(a->fils_gauche);
+    parcoursPrefixe(a->fils_droit);
   }
 }
 
 void parcoursInfixe(Arbre a){
   //Infixe : gauche, racine, droite
   if(!estVideArbre(a)){
-    parcoursPrefixe(Arbre a->fils_gauche(a));
-    traiter(a->valeur);
-    parcoursPrefixe(Arbre a->fils_droit(a));
+    parcoursPrefixe(a->fils_gauche);
+    //traiter(a->valeur);
+    parcoursPrefixe(a->fils_droit);
   }
 }
 
 void parcoursPostfixe(Arbre a){
   //Postfixe : gauche, droite, racine
   if(!estVideArbre(a)){
-    parcoursPrefixe(Arbre a->fils_gauche(a));
-    parcoursPrefixe(Arbre a->fils_droit(a));
-      traiter(a->valeur);
-    }
+    parcoursPrefixe(a->fils_gauche);
+    parcoursPrefixe(a->fils_droit);
+    //traiter(a->valeur);
   }
+}
 
 void parcoursBizarre(Arbre a){
   //commence par le bas de l'arbre
   if(!estVideArbre(a)){
-    traiter(a->valeur);
+    //traiter(a->valeur);
     if(!estFeuille(fils_gauche(a))){
-      parcoursPrefixe(Arbre a->fils_gauche(a));
+      parcoursPrefixe(a->fils_gauche);
     }
     else{
-      traiter(fils_gauche(a));
+      //traiter(fils_gauche(a));
     }
     if(!estFeuille(fils_droit(a))){
-      parcoursPrefixe(Arbre a->fils_droit(a));
+      parcoursPrefixe(a->fils_droit);
     }
     else{
-      traiter(fils_droit(a));
+      //traiter(fils_droit(a));
     }
   }
 }
@@ -121,29 +123,33 @@ int nbFeuilles(Arbre a){
   }
 }
 
-int contientEltArbre(Arbre a, Telement elt){
+int contientEltArbre(Arbre a, int elt){
   if(!estVideArbre(a)){
-    return (a->valeur==elt) || contientEltArbre(Arbre a->fils_gauche(a)) || contientEltArbre(Arbre a->fils_droit(a));
+    return (a->valeur==elt) || contientEltArbre(a->fils_gauche, elt) || contientEltArbre(a->fils_droit, elt);
   }
   else return 0;
 }
 
 int hauteurArbre(Arbre a){
-  if (estVide(a)){
+  if (estVideArbre(a)){
     return 0;
   }
   int hg = hauteurArbre(fils_gauche(a));
   int hd = hauteurArbre(fils_droit(a));
-  return max(hg,hd)+1;
+  //return max(hg,hd)+1;
+  if (hg>hd){
+    return hg+1;
+  }
+  else return hd+1;
 }
 
-Arbre LibMem(Arbe a){
+Arbre LibMem(Arbre a){
   free(a);
-  a=NULL;
+  return a=NULL;
 }
 
 Arbre suppArbre(Arbre a){
-  if(!estVide(a)){
+  if(!estVideArbre(a)){
     suppArbre(fils_gauche(a));
     suppArbre(fils_droit(a));
     a=LibMem(a);
@@ -152,12 +158,66 @@ Arbre suppArbre(Arbre a){
 }
 
 int RechercheMinArbre(Arbre a, int min){
-  if (estVide(a)){
+  if (estVideArbre(a)){
     return 0;
   }
-  int g = RechercheMinArbre(fils_gauche(a,min));
-  int d = RechercheMinArbre(fils_droit(a,min));
+  int g = RechercheMinArbre(fils_gauche(a),min);
+  int d = RechercheMinArbre(fils_droit(a),min);
   if (a->valeur<min){
     min=a->valeur;
+  }
+}
+
+void SommeArbre(Arbre ab, int *somme){//précondition initialisée à 0
+  if(!estVideArbre(ab)){
+    SommeArbre(ab->fils_gauche, somme);
+    *somme+=ab->valeur;
+    SommeArbre(ab->fils_droit,somme);
+  }
+}
+
+void ParcoursLargeur(Arbre ab){ //affichage des valeurs de l'arbre par étage
+  if (estVideArbre(ab)){
+    printf("Arbre vide!\n");
+  }
+  else{
+    Arbre tmp=ab;
+    File f=creerFile();
+    f=inserQueue(f,ab);
+    while(!estVideFile(f)){
+      tmp=teteFile(f);
+      printf("%d\n",tmp->valeur);
+      f=suppTete(f);
+      if(!estVideArbre(tmp->fils_gauche)){
+        f=inserQueue(f,tmp->fils_gauche);
+      }
+      if(!estVideArbre(tmp->fils_droit)){
+        f=inserQueue(f,tmp->fils_droit);
+      }
+    }
+  }
+}
+
+//Arbre ParcoursLargeurRec(...) à faire à la maison
+
+void ParcoursPrefixeIt(Arbre ab){
+  //Préfixe : racine, gauche, droite
+  if (estVideArbre(ab)){
+    printf("Arbre vide!\n");
+  }
+  else{
+    Arbre tmp;
+    Pile p=empiler(p,ab);
+    while(!estVidePile(p)){
+      tmp=tetePile(p);
+      p=depiler(p);
+      printf("%d\n",tmp->valeur);
+      if(!estVideArbre(tmp->fils_droit)){
+        p=empiler(p,tmp->fils_droit);
+      }
+      if(!estVideArbre(tmp->fils_gauche)){
+        p=empiler(p,tmp->fils_gauche);
+      }
+    }
   }
 }
