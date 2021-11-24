@@ -223,3 +223,44 @@ void ParcoursPrefixeIt(Arbre ab){
     }
   }
 }
+
+Arbre inserABR(Telement elt, Arbre a){
+  if(estVideArbre(a)){
+    return creatFeuille(elt);
+  }
+  if (elt>donneeArbre(a)){
+    a->fils_droit=inserABR(elt,fils_droit(a));
+  }
+  else {
+    a->fils_gauche=inserABR(elt,fils_gauche(a));
+    return a;
+  }
+}
+
+void inserABR(Telement elt, Arbre *a){
+  if(estVideArbre(*a)){
+    *a = creatFeuille(elt);
+  }
+  else {
+    if(elt>donneeArbre(*a)){
+      inserABR(elt, &((*a)->fils_droit));
+    }
+    else inserABR(elt, &((*a)->fils_gauche));
+  }
+}
+
+//définir suppRacineABR
+Arbre suppEltABR(Telement elt, Arbre racine){
+  if(!estVideArbre(racine)){
+    if(donneeArbre(racine)==elt){
+      suppRacineABR(racine);
+      return racine;
+    }
+    else{
+      if(elt<donneeArbre(racine)){
+        racine->fils_gauche = suppEltABR(elt, fils_gauche(racine));
+      }
+      else racine->fils_droit = suppEltABR(elt, fils_gauche(racine));
+    }
+  }
+}
