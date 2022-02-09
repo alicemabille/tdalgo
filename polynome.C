@@ -43,7 +43,7 @@ int degNoms(Monome *m){
   return m.coef;
 }
 
-iny coefMon(Polynome *p){
+int coefMon(Polynome *p){
   int n=0;
   for (int i=0;i=p.nbMonome;i++){
     if (p.coef>n){
